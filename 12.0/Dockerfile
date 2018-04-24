@@ -18,7 +18,7 @@ LABEL io.k8s.description="Platform for building and running JEE applications on 
       com.redhat.deployments-dir="/wildfly/standalone/deployments"
 
 # Install Maven, Wildfly
-RUN INSTALL_PKGS="tar unzip bc which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel" && \
+RUN INSTALL_PKGS="tar telnet curl unzip bc which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel" && \
     yum install -y --enablerepo=centosplus $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y && \
@@ -44,5 +44,6 @@ RUN chown -R 1001:0 /wildfly && chown -R 1001:0 $HOME && \
     chmod -R g+rw /opt/s2i/destination
 
 USER 1001
+EXPOSE 8080
 
-CMD $STI_SCRIPTS_PATH/usage
+CMD /wildfly/bin/standalone.sh -b 0.0.0.0
